@@ -8,7 +8,7 @@ class UserProfileManager(BaseUserManager):
     def create_user(self,email,name,password=None):
         """"Creates a new user profile object."""
         if not email:
-            ValueError('Users must have an email address.')
+            raise ValueError('Users must have an email address.')
         email = self.normalize_email(email)
         user = self.model(email=email,name=name)
 
@@ -38,7 +38,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELD = ['name']
+    REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
         """Used to get a users full name"""
