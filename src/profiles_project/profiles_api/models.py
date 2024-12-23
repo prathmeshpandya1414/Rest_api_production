@@ -18,6 +18,7 @@ class UserProfileManager(BaseUserManager):
 
     def create_superuser(self,email,name,password):
         """Creates and saves a new superuser with given details."""
+        email = self.normalize_email(email)
         user = self.create_user(email,name,password)
         user.is_superuser = True
         user.is_staff = True
@@ -50,13 +51,16 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         """Django uses this when it needs to convert the object to a string"""
-        return self.email
+        return f"{self.name}({self.email})"
 
 class ProfileFeedItem(models.Model):
     """Profile status update."""
     user_profile = models.ForeignKey('UserProfile',on_delete=models.CASCADE)
     status_text = models.CharField(max_length=255)
     created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_on']
 
     def __str__(self):
         """Return the model as a string."""
