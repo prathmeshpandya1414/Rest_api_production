@@ -21,8 +21,12 @@ locale-gen en_GB.UTF-8 > /dev/null 2>&1
 # Install Python, SQLite, pip, and other dependencies
 echo "Installing dependencies..."
 apt-get update -y > /dev/null
+<<<<<<< HEAD
 apt-get install -y python3-dev python3-venv sqlite3 python3-pip supervisor nginx git \
     build-essential libpcre3-dev libssl-dev zlib1g-dev > /dev/null
+=======
+apt-get install -y python3-dev python3-venv sqlite3 python3-pip supervisor nginx git > /dev/null
+>>>>>>> b07a3b2f66ec5733aa277c599b64757c449286c3
 
 # Create necessary directories
 echo "Setting up directories..."
@@ -44,6 +48,7 @@ if [ ! -d "$VIRTUALENV_BASE_PATH/profiles_api" ]; then
     python3 -m venv $VIRTUALENV_BASE_PATH/profiles_api
 fi
 
+<<<<<<< HEAD
 # Upgrade pip, setuptools, and wheel (ensure dependencies are correctly installed)
 echo "Upgrading pip, setuptools, and wheel..."
 $VIRTUALENV_BASE_PATH/profiles_api/bin/pip install --upgrade pip setuptools wheel > /dev/null
@@ -62,6 +67,23 @@ echo "Running database migrations..."
 cd $PROJECT_BASE_PATH/src
 $VIRTUALENV_BASE_PATH/profiles_api/bin/python manage.py migrate
 
+=======
+# Install Python dependencies
+echo "Installing Python dependencies..."
+if [ -f "$PROJECT_BASE_PATH/$REQUIREMENTS_FILE" ]; then
+    $VIRTUALENV_BASE_PATH/profiles_api/bin/pip install --upgrade pip > /dev/null
+    $VIRTUALENV_BASE_PATH/profiles_api/bin/pip install -r $PROJECT_BASE_PATH/$REQUIREMENTS_FILE > /dev/null
+else
+    echo "Error: $REQUIREMENTS_FILE file not found!"
+    exit 1
+fi
+
+# Run database migrations
+echo "Running database migrations..."
+cd $PROJECT_BASE_PATH/src
+$VIRTUALENV_BASE_PATH/profiles_api/bin/python manage.py migrate
+
+>>>>>>> b07a3b2f66ec5733aa277c599b64757c449286c3
 # Configure Supervisor
 SUPERVISOR_CONF="/etc/supervisor/conf.d/profiles_api.conf"
 echo "Configuring Supervisor..."
@@ -89,4 +111,8 @@ else
 fi
 
 # Final message
+<<<<<<< HEAD
 echo "Setup completed successfully! :)"
+=======
+echo "Done :)"
+>>>>>>> b07a3b2f66ec5733aa277c599b64757c449286c3
